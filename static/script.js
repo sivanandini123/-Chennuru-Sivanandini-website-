@@ -3,7 +3,7 @@
 let inventory = []; 
 let totalProfit = 0; 
 let totalLoss = 0; 
-let editingItemId = null; // To keep track of the item being edited
+let editingItemId = null; // To keep track of the item being edited 
 // DOM Elements 
 // Navigation
 const navAddItemBtn = document.getElementById('navAddItem'); 

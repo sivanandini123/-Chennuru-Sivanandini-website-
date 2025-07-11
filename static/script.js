@@ -8,7 +8,7 @@ let editingItemId = null; // To keep track of the item being edited
 // Navigation
 const navAddItemBtn = document.getElementById('navAddItem'); 
 const navInventoryViewBtn = document.getElementById('navInventoryView'); 
-const navStockModificaƟ onBtn = document.getElementById('navStockModification');
+const navStockModificationBtn = document.getElementById('navStockModification');
 const navButtons = document.querySelectorAll('.nav-buƩ on');
 // Screens 
 const addItemScreen = document.getElementById('addItemScreen'); 
@@ -102,7 +102,7 @@ function loadState() {
  * @param {Array} itemsToDisplay - The array of items to render (can be filtered). 
  */ 
 function renderInventory(itemsToDisplay = inventory) {
- inventoryList.innerHTML = ''; // Clear exisƟ ng list
+ inventoryList.innerHTML = ''; // Clear existing list
  if (itemsToDisplay.length === 0) { 
  noItemsMessage.classList.remove('hidden'); 
  return; 
@@ -117,18 +117,18 @@ function renderInventory(itemsToDisplay = inventory) {
 900">${item.id}</td> 
  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${item.name}</td> 
  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-
-700">${item.quanƟ ty}</td>
+700">${item.quantity}</td>
  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-
 700">₹${item.price.toFixed(2)}</td> 
  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium"> 
  <buƩ on onclick="editItem('${item.id}')"
  class="text-blue-600 hover:text-blue-900 mr-3 px-3 py-1 rounded-md bg-blue-
-100 hover:bg-blue-200 transiƟ on duraƟ on-150 ease-in-out"> 
+100 hover:bg-blue-200 transiƟ on duration-150 ease-in-out"> 
  Edit 
  </button>
  <button onclick="deleteItem('${item.id}')"
  class="text-red-600 hover:text-red-900 px-3 py-1 rounded-md bg-red-100 
-hover:bg-red-200 transiƟ on duraƟ on-150 ease-in-out"> 
+hover:bg-red-200 transition duration-150 ease-in-out"> 
  Delete 
  </button>
  </td> 
@@ -175,11 +175,11 @@ function updateFinancialSummary() {
 function showScreen(screenId) {
  // Hide all screens 
  document.querySelectorAll('.screen').forEach(screen => { 
- screen.classList.remove('acƟ ve');
+ screen.classList.remove('active');
  }); 
  // DeacƟ vate all nav buƩ ons
  navButtons.forEach(button => {
- button.classList.remove('acƟ ve');
+ button.classList.remove('active');
  }); 
  // Show the selected screen and activate its nav buƩ on
  document.getElementById(screenId).classList.add('active');
@@ -220,7 +220,7 @@ itemForm.addEventListener('submit', function(event) {
  showMessage('Please fill in all fields with valid positive values.', 'error');
  return; 
  } 
- if (ediƟ ngItemId) {
+ if (editingItemId) {
  // EdiƟ ng existing item
  const itemIndex = inventory.findIndex(item => item.id === editingItemId);
  if (itemIndex !== -1) { 
@@ -261,7 +261,7 @@ itemForm.addEventListener('submit', function(event) {
  populateModifyItemSelect(); // Update dropdown 
 }); 
 /** 
-* Clears the form fields on the Add Item screen and resets ediƟ ng state.
+* Clears the form fields on the Add Item screen and resets editing state.
  */ 
 function clearForm() {
  itemIdInput.value = ''; 
@@ -273,7 +273,7 @@ function clearForm() {
  itemIdInput.removeAttribute('readonly'); // Ensure ID is editable for new entries
  itemNameInput.focus(); // Focus on the first input field 
 } 
-// Event listener for the clear form buƩ on
+// Event listener for the clear form button
 clearFormBtn.addEventListener('click', clearForm); 
 /** 
  * Populates the form with data of an item to be edited. 
@@ -354,7 +354,7 @@ modifyItemIdSelect.addEventListener('change', toggleSalePriceInput);
 * Handles the submission of the stock modification form.
  * @param {Event} event - The form submission event. 
  */ 
-stockModificaƟ onForm.addEventListener('submit', function(event) {
+stockModificationForm.addEventListener('submit', function(event) {
  event.preventDefault(); 
  const selectedItemId = modifyItemIdSelect.value; 
  const quantityChange = parseInt(modifyQuantityInput.value);
@@ -383,7 +383,7 @@ document.querySelector('input[name="changeReason"]:checked').value;
  return; 
  } 
  // Perform stock modification
- itemToModify.quanƟ ty -= quantityChange;
+ itemToModify.quantity -= quantityChange;
  if (changeReason === 'sale') { 
  // Profit/Loss = (Sale Price - Cost Price) * Quantity
  const itemCostPrice = itemToModify.price; 
@@ -400,7 +400,7 @@ document.querySelector('input[name="changeReason"]:checked').value;
  } 
  } else if (changeReason === 'damage') { 
  totalLoss += (quantityChange * itemToModify.price); // Loss is based on cost price
- showMessage(`Logged ${quanƟ tyChange} of ${itemToModify.name} as damaged. Loss: 
+ showMessage(`Logged ${quantityChange} of ${itemToModify.name} as damaged. Loss: 
 ₹${(quantityChange * itemToModify.price).toFixed(2)}`, 'info');
  } 
  // Remove item if quantity drops to 0 or below
@@ -415,10 +415,10 @@ removed items
  updateFinancialSummary(); // Update profit/loss display 
  updateInventoryMetrics(); // Update overall inventory metrics 
  renderInventory(); // Re-render inventory table if acƟ ve
- modifyQuantityInput.value = ''; // Clear the quanƟ ty input aŌ er successful modification
+ modifyQuantityInput.value = ''; // Clear the quantity input aŌ er successful modification
  salePriceInput.value = ''; // Clear sale price input 
 }); 
-// IniƟ al load and render when the page loads
+// Initial load and render when the page loads
 document.addEventListener('DOMContentLoaded', () => { 
  loadState(); 
  showScreen('addItemScreen'); // Show the Add Item screen by default 

@@ -1,38 +1,38 @@
-// staƟ c/script.js
+// static/script.js
 // Global state variables 
 let inventory = []; 
 let totalProfit = 0; 
 let totalLoss = 0; 
-let ediƟ ngItemId = null; // To keep track of the item being edited
+let editingItemId = null; // To keep track of the item being edited
 // DOM Elements 
-// NavigaƟ on
+// Navigation
 const navAddItemBtn = document.getElementById('navAddItem'); 
 const navInventoryViewBtn = document.getElementById('navInventoryView'); 
-const navStockModificaƟ onBtn = document.getElementById('navStockModificaƟ on');
-const navBuƩ ons = document.querySelectorAll('.nav-buƩ on');
+const navStockModificaƟ onBtn = document.getElementById('navStockModification');
+const navButtons = document.querySelectorAll('.nav-buƩ on');
 // Screens 
 const addItemScreen = document.getElementById('addItemScreen'); 
 const inventoryViewScreen = document.getElementById('inventoryViewScreen'); 
-const stockModificaƟ onScreen = document.getElementById('stockModificaƟ onScreen');
+const stockModificationScreen = document.getElementById('stockModificationScreen');
 // Add Item Screen Elements 
 const itemForm = document.getElementById('itemForm'); 
 const itemIdInput = document.getElementById('itemId'); 
 const itemNameInput = document.getElementById('itemName'); 
-const itemQuanƟ tyInput = document.getElementById('itemQuanƟ ty');
+const itemQuantityInput = document.getElementById('itemQuantity');
 const itemPriceInput = document.getElementById('itemPrice'); // Now "Cost Price" 
 const saveItemBtn = document.getElementById('saveItemBtn'); 
 const clearFormBtn = document.getElementById('clearFormBtn'); 
 // Inventory View Screen Elements 
 const totalUniqueItemsDisplay = document.getElementById('totalUniqueItems'); 
-const totalQuanƟ tyDisplay = document.getElementById('totalQuanƟ ty');
-const totalValuaƟ onDisplay = document.getElementById('totalValuaƟ on');
+const totalQuantityDisplay = document.getElementById('totalQuantity');
+const totalValuationDisplay = document.getElementById('totalValuation');
 const inventorySearchBar = document.getElementById('inventorySearchBar'); 
 const inventoryList = document.getElementById('inventoryList'); 
 const noItemsMessage = document.getElementById('noItemsMessage'); 
-// Stock ModificaƟ on Screen Elements
-const stockModificaƟ onForm = document.getElementById('stockModificaƟ onForm');
+// Stock Modification Screen Elements
+const stockModificationForm = document.getElementById('stockModificationForm');
 const modifyItemIdSelect = document.getElementById('modifyItemId'); 
-const modifyQuanƟ tyInput = document.getElementById('modifyQuanƟ ty');
+const modifyQuantityInput = document.getElementById('modifyQuantity');
 const reasonSaleRadio = document.getElementById('reasonSale'); 
 const reasonDamageRadio = document.getElementById('reasonDamage'); 
 const salePriceContainer = document.getElementById('salePriceContainer'); 
@@ -46,7 +46,7 @@ const globalMessageBox = document.getElementById('globalMessageBox');
  * @param {string} message - The message to display. 
  * @param {string} type - 'success', 'error', or 'info' to determine styling. 
  */ 
-funcƟ on showMessage(message, type) {
+function showMessage(message, type) {
  globalMessageBox.textContent = message; 
  globalMessageBox.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-
 100', 'text-red-800', 'bg-blue-100', 'text-blue-800'); 
@@ -65,7 +65,7 @@ funcƟ on showMessage(message, type) {
 /** 
  * Saves the current inventory, total profit, and total loss to local storage. 
  */ 
-funcƟ on saveState() {
+function saveState() {
  try { 
  localStorage.setItem('inventory', JSON.stringify(inventory)); 
  localStorage.setItem('totalProfit', totalProfit.toFixed(2)); 
@@ -78,7 +78,7 @@ funcƟ on saveState() {
 /** 
  * Loads inventory, total profit, and total loss data from local storage. 
  */ 
-funcƟ on loadState() {
+function loadState() {
  try { 
  const storedInventory = localStorage.getItem('inventory'); 
  if (storedInventory) { 
@@ -101,7 +101,7 @@ funcƟ on loadState() {
  * Renders the inventory items to the table on the Inventory View screen. 
  * @param {Array} itemsToDisplay - The array of items to render (can be filtered). 
  */ 
-funcƟ on renderInventory(itemsToDisplay = inventory) {
+function renderInventory(itemsToDisplay = inventory) {
  inventoryList.innerHTML = ''; // Clear exisƟ ng list
  if (itemsToDisplay.length === 0) { 
  noItemsMessage.classList.remove('hidden'); 
@@ -111,7 +111,7 @@ funcƟ on renderInventory(itemsToDisplay = inventory) {
  } 
  itemsToDisplay.forEach(item => { 
  const row = document.createElement('tr'); 
- row.className = 'hover:bg-gray-50 transiƟ on duraƟ on-150 ease-in-out'; 
+ row.className = 'hover:bg-gray-50 transiƟ on duration-150 ease-in-out'; 
  row.innerHTML = ` 
  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-
 900">${item.id}</td> 
@@ -125,12 +125,12 @@ funcƟ on renderInventory(itemsToDisplay = inventory) {
  class="text-blue-600 hover:text-blue-900 mr-3 px-3 py-1 rounded-md bg-blue-
 100 hover:bg-blue-200 transiƟ on duraƟ on-150 ease-in-out"> 
  Edit 
- </buƩ on>
- <buƩ on onclick="deleteItem('${item.id}')"
+ </button>
+ <button onclick="deleteItem('${item.id}')"
  class="text-red-600 hover:text-red-900 px-3 py-1 rounded-md bg-red-100 
 hover:bg-red-200 transiƟ on duraƟ on-150 ease-in-out"> 
  Delete 
- </buƩ on>
+ </button>
  </td> 
  `; 
  inventoryList.appendChild(row); 
@@ -141,30 +141,30 @@ hover:bg-red-200 transiƟ on duraƟ on-150 ease-in-out">
  */ 
 funcƟ on updateInventoryMetrics() {
  const totalUnique = inventory.length; 
- const totalQty = inventory.reduce((sum, item) => sum + item.quanƟ ty, 0);
- const totalVal = inventory.reduce((sum, item) => sum + (item.quanƟ ty * item.price), 0);
+ const totalQty = inventory.reduce((sum, item) => sum + item.quantity, 0);
+ const totalVal = inventory.reduce((sum, item) => sum + (item.quantity * item.price), 0);
  totalUniqueItemsDisplay.textContent = totalUnique; 
- totalQuanƟ tyDisplay.textContent = totalQty;
- totalValuaƟ onDisplay.textContent = `₹${totalVal.toFixed(2)}`;
+ totalQuantityDisplay.textContent = totalQty;
+ totalValuationDisplay.textContent = `₹${totalVal.toFixed(2)}`;
 } 
 /** 
-* Populates the item selecƟ on dropdown on the Stock ModificaƟ on screen.
+* Populates the item selecƟ on dropdown on the Stock Modification screen.
  */ 
-funcƟ on populateModifyItemSelect() {
- modifyItemIdSelect.innerHTML = '<opƟ on value="">-- Select an item --</opƟ on>'; // Clear 
-exisƟ ng opƟ ons
+function populateModifyItemSelect() {
+ modifyItemIdSelect.innerHTML = '<option value="">-- Select an item --</option>'; // Clear 
+existing options
  inventory.forEach(item => { 
- const opƟ on = document.createElement('opƟ on');
- opƟ on.value = item.id;
- opƟ on.textContent = `${item.name} (ID: ${item.id}, Qty: ${item.quanƟ ty}, Cost: 
+ const option = document.createElement('opƟ on');
+ option.value = item.id;
+ option.textContent = `${item.name} (ID: ${item.id}, Qty: ${item.quantity}, Cost: 
 ₹${item.price.toFixed(2)})`; 
- modifyItemIdSelect.appendChild(opƟ on);
+ modifyItemIdSelect.appendChild(option);
  }); 
 } 
 /** 
  * Updates the profit and loss displays. 
  */ 
-funcƟ on updateFinancialSummary() {
+function updateFinancialSummary() {
  totalProfitDisplay.textContent = `₹${totalProfit.toFixed(2)}`; 
  totalLossDisplay.textContent = `₹${totalLoss.toFixed(2)}`; 
 } 
@@ -172,72 +172,72 @@ funcƟ on updateFinancialSummary() {
  * Handles screen switching logic. 
  * @param {string} screenId - The ID of the screen to show. 
  */ 
-funcƟ on showScreen(screenId) {
+function showScreen(screenId) {
  // Hide all screens 
  document.querySelectorAll('.screen').forEach(screen => { 
  screen.classList.remove('acƟ ve');
  }); 
  // DeacƟ vate all nav buƩ ons
- navBuƩ ons.forEach(buƩ on => {
- buƩ on.classList.remove('acƟ ve');
+ navButtons.forEach(button => {
+ button.classList.remove('acƟ ve');
  }); 
- // Show the selected screen and acƟ vate its nav buƩ on
- document.getElementById(screenId).classList.add('acƟ ve');
- if (screenId === 'addItemScreen') navAddItemBtn.classList.add('acƟ ve');
+ // Show the selected screen and activate its nav buƩ on
+ document.getElementById(screenId).classList.add('active');
+ if (screenId === 'addItemScreen') navAddItemBtn.classList.add('active');
  if (screenId === 'inventoryViewScreen') { 
- navInventoryViewBtn.classList.add('acƟ ve');
- renderInventory(); // Re-render inventory when this screen is acƟ ve
- updateInventoryMetrics(); // Update metrics when this screen is acƟ ve
+ navInventoryViewBtn.classList.add('active');
+ renderInventory(); // Re-render inventory when this screen is active
+ updateInventoryMetrics(); // Update metrics when this screen is active
  inventorySearchBar.value = ''; // Clear search bar on screen switch 
  } 
- if (screenId === 'stockModificaƟ onScreen') {
- navStockModificaƟ onBtn.classList.add('acƟ ve');
- populateModifyItemSelect(); // Populate dropdown when this screen is acƟ ve
+ if (screenId === 'stockModificationScreen') {
+ navStockModificationBtn.classList.add('active');
+ populateModifyItemSelect(); // Populate dropdown when this screen is active
  updateFinancialSummary(); // Update financial summary 
- modifyQuanƟ tyInput.value = ''; // Clear quanƟ ty input
+ modifyQuantityInput.value = ''; // Clear quantity input
  reasonSaleRadio.checked = true; // Default to sale 
  toggleSalePriceInput(); // Show/hide sale price input 
  } 
  clearForm(); // Clear the add/edit form when switching screens 
 } 
-// Event Listeners for NavigaƟ on
+// Event Listeners for Navigation
 navAddItemBtn.addEventListener('click', () => showScreen('addItemScreen')); 
 navInventoryViewBtn.addEventListener('click', () => showScreen('inventoryViewScreen')); 
-navStockModificaƟ onBtn.addEventListener('click', () => 
-showScreen('stockModificaƟ onScreen'));
+navStockModificationBtn.addEventListener('click', () => 
+showScreen('stockModificationScreen'));
 /** 
  * Handles the submission of the item form (add or edit). 
  * @param {Event} event - The form submission event. 
  */ 
-itemForm.addEventListener('submit', funcƟ on(event) {
+itemForm.addEventListener('submit', function(event) {
  event.preventDefault(); // Prevent default form submission 
  const id = itemIdInput.value.trim(); 
  const name = itemNameInput.value.trim(); 
- const quanƟ ty = parseInt(itemQuanƟ tyInput.value);
+ const quantity = parseInt(itemQuantityInput.value);
  const price = parseFloat(itemPriceInput.value); 
- // Basic validaƟ on
- if (!id || !name || isNaN(quanƟ ty) || quanƟ ty < 0 || isNaN(price) || price < 0) {
- showMessage('Please fill in all fields with valid posiƟ ve values.', 'error');
+ // Basic validation
+ if (!id || !name || isNaN(quantity) || quantity < 0 || isNaN(price) || price < 0) {
+ showMessage('Please fill in all fields with valid positive values.', 'error');
  return; 
  } 
  if (ediƟ ngItemId) {
- // EdiƟ ng exisƟ ng item
- const itemIndex = inventory.findIndex(item => item.id === ediƟ ngItemId);
+ // EdiƟ ng existing item
+ const itemIndex = inventory.findIndex(item => item.id === editingItemId);
  if (itemIndex !== -1) { 
  // Check if ID was changed and if new ID is unique 
- if (ediƟ ngItemId !== id && inventory.some(item => item.id === id)) {
+ if (editingItemId !== id && inventory.some(item => item.id === id)) {
  showMessage('Item ID already exists. Please use a unique ID.', 'error'); 
  return; 
  } 
  inventory[itemIndex].id = id; // Update ID if changed 
  inventory[itemIndex].name = name; 
- inventory[itemIndex].quanƟ ty = quanƟ ty;
+ inventory[itemIndex].quantity = quantity;
  inventory[itemIndex].price = price; 
  showMessage('Item updated successfully!', 'success'); 
  } 
- ediƟ ngItemId = null; // Reset ediƟ ng state
- saveItemBtn.textContent = 'Add Item'; // Change buƩ on back
- itemIdInput.removeAƩ ribute('readonly'); // Make ID editable again
+ editingItemId = null; // Reset editing state
+ saveItemBtn.textContent = 'Add Item'; // Change button back
+ itemIdInput.removeAttribute('readonly'); // Make ID editable again
  } else { 
  // Adding new item 
  // Check for unique ID when adding a new item 
@@ -248,7 +248,7 @@ itemForm.addEventListener('submit', funcƟ on(event) {
  const newItem = { 
  id: id, 
  name: name, 
- quanƟ ty: quanƟ ty,
+ quanƟ ty: quantity,
  price: price // This is the cost price 
  }; 
  inventory.push(newItem); 
@@ -263,14 +263,14 @@ itemForm.addEventListener('submit', funcƟ on(event) {
 /** 
 * Clears the form fields on the Add Item screen and resets ediƟ ng state.
  */ 
-funcƟ on clearForm() {
+function clearForm() {
  itemIdInput.value = ''; 
  itemNameInput.value = ''; 
- itemQuanƟ tyInput.value = '';
+ itemQuantityInput.value = '';
  itemPriceInput.value = ''; 
- ediƟ ngItemId = null;
+ editingItemId = null;
  saveItemBtn.textContent = 'Add Item'; 
- itemIdInput.removeAƩ ribute('readonly'); // Ensure ID is editable for new entries
+ itemIdInput.removeAttribute('readonly'); // Ensure ID is editable for new entries
  itemNameInput.focus(); // Focus on the first input field 
 } 
 // Event listener for the clear form buƩ on
@@ -279,27 +279,27 @@ clearFormBtn.addEventListener('click', clearForm);
  * Populates the form with data of an item to be edited. 
  * @param {string} id - The ID of the item to edit. 
  */ 
-funcƟ on editItem(id) {
+function editItem(id) {
  const itemToEdit = inventory.find(item => item.id === id); 
  if (itemToEdit) { 
  itemIdInput.value = itemToEdit.id; 
  itemNameInput.value = itemToEdit.name; 
- itemQuanƟ tyInput.value = itemToEdit.quanƟ ty;
+ itemQuantityInput.value = itemToEdit.quantity;
  itemPriceInput.value = itemToEdit.price; 
- ediƟ ngItemId = id;
+ editingItemId = id;
  saveItemBtn.textContent = 'Update Item'; 
- itemIdInput.setAƩ ribute('readonly', 'true'); // Make ID read-only during edit 
+ itemIdInput.setAttribute('readonly', 'true'); // Make ID read-only during edit 
  showScreen('addItemScreen'); // Switch to add item screen 
- itemNameInput.focus(); // Focus on the name input for quick ediƟ ng
- showMessage(`EdiƟ ng item: ${itemToEdit.name}`, 'info');
+ itemNameInput.focus(); // Focus on the name input for quick editing
+ showMessage(`Editing item: ${itemToEdit.name}`, 'info');
  } 
 } 
 /** 
  * Deletes an item from the inventory. 
  * @param {string} id - The ID of the item to delete. 
  */ 
-funcƟ on deleteItem(id) {
- const iniƟ alLength = inventory.length;
+function deleteItem(id) {
+ const initialLength = inventory.length;
  const deletedItem = inventory.find(item => item.id === id); 
  inventory = inventory.filter(item => item.id !== id); 
  if (inventory.length < iniƟ alLength) {
@@ -317,7 +317,7 @@ funcƟ on deleteItem(id) {
 /** 
  * Filters inventory items based on search input on the Inventory View screen. 
  */ 
-inventorySearchBar.addEventListener('input', funcƟ on() {
+inventorySearchBar.addEventListener('input', function() {
  const searchTerm = inventorySearchBar.value.toLowerCase().trim(); 
  const filteredItems = inventory.filter(item => 
  item.name.toLowerCase().includes(searchTerm) || 
@@ -328,7 +328,7 @@ inventorySearchBar.addEventListener('input', funcƟ on() {
 /** 
  * Toggles the visibility of the sale price input based on the selected reason. 
  */ 
-funcƟ on toggleSalePriceInput() {
+function toggleSalePriceInput() {
  if (reasonSaleRadio.checked) { 
  salePriceContainer.classList.remove('hidden'); 
  salePriceInput.setAƩ ribute('required', 'true');
@@ -341,23 +341,23 @@ funcƟ on toggleSalePriceInput() {
  } 
  } else { 
  salePriceContainer.classList.add('hidden'); 
- salePriceInput.removeAƩ ribute('required');
+ salePriceInput.removeAttribute('required');
  salePriceInput.value = ''; 
  } 
 } 
-// Event listeners for reason radio buƩ ons
+// Event listeners for reason radio buttons
 reasonSaleRadio.addEventListener('change', toggleSalePriceInput); 
 reasonDamageRadio.addEventListener('change', toggleSalePriceInput); 
-// Event listener for item selecƟ on change to update default sale price
+// Event listener for item selection change to update default sale price
 modifyItemIdSelect.addEventListener('change', toggleSalePriceInput); 
 /** 
-* Handles the submission of the stock modificaƟ on form.
+* Handles the submission of the stock modification form.
  * @param {Event} event - The form submission event. 
  */ 
-stockModificaƟ onForm.addEventListener('submit', funcƟ on(event) {
+stockModificaƟ onForm.addEventListener('submit', function(event) {
  event.preventDefault(); 
  const selectedItemId = modifyItemIdSelect.value; 
- const quanƟ tyChange = parseInt(modifyQuanƟ tyInput.value);
+ const quantityChange = parseInt(modifyQuantityInput.value);
  const changeReason = 
 document.querySelector('input[name="changeReason"]:checked').value; 
  const salePrice = parseFloat(salePriceInput.value); 
@@ -365,8 +365,8 @@ document.querySelector('input[name="changeReason"]:checked').value;
  showMessage('Please select an item.', 'error'); 
  return; 
  } 
- if (isNaN(quanƟ tyChange) || quanƟ tyChange <= 0) {
- showMessage('Please enter a valid posiƟ ve quanƟ ty.', 'error');
+ if (isNaN(quantityChange) || quanƟ tyChange <= 0) {
+ showMessage('Please enter a valid positive quantity.', 'error');
  return; 
  } 
  if (changeReason === 'sale' && (isNaN(salePrice) || salePrice < 0)) { 
@@ -378,44 +378,44 @@ document.querySelector('input[name="changeReason"]:checked').value;
  showMessage('Selected item not found.', 'error'); 
  return; 
  } 
- if (quanƟ tyChange > itemToModify.quanƟ ty) {
- showMessage('Cannot change more than available quanƟ ty.', 'error');
+ if (quanƟ tyChange > itemToModify.quantity) {
+ showMessage('Cannot change more than available quantity.', 'error');
  return; 
  } 
- // Perform stock modificaƟ on
- itemToModify.quanƟ ty -= quanƟ tyChange;
+ // Perform stock modification
+ itemToModify.quanƟ ty -= quantityChange;
  if (changeReason === 'sale') { 
- // Profit/Loss = (Sale Price - Cost Price) * QuanƟ ty
+ // Profit/Loss = (Sale Price - Cost Price) * Quantity
  const itemCostPrice = itemToModify.price; 
  const profitLossPerUnit = salePrice - itemCostPrice; 
- const transacƟ onProfitLoss = profitLossPerUnit * quanƟ tyChange;
- if (transacƟ onProfitLoss >= 0) {
- totalProfit += transacƟ onProfitLoss;
- showMessage(`Sold ${quanƟ tyChange} of ${itemToModify.name} for 
-₹${salePrice.toFixed(2)} each. Profit: ₹${transacƟ onProfitLoss.toFixed(2)}`, 'success');
+ const transactionProfitLoss = profitLossPerUnit * quantityChange;
+ if (transactionProfitLoss >= 0) {
+ totalProfit += transactionProfitLoss;
+ showMessage(`Sold ${quantityChange} of ${itemToModify.name} for 
+₹${salePrice.toFixed(2)} each. Profit: ₹${transactionProfitLoss.toFixed(2)}`, 'success');
  } else { 
- totalLoss += Math.abs(transacƟ onProfitLoss);
- showMessage(`Sold ${quanƟ tyChange} of ${itemToModify.name} for 
-₹${salePrice.toFixed(2)} each. Loss: ₹${Math.abs(transacƟ onProfitLoss).toFixed(2)}`, 'info');
+ totalLoss += Math.abs(transactionProfitLoss);
+ showMessage(`Sold ${quantityChange} of ${itemToModify.name} for 
+₹${salePrice.toFixed(2)} each. Loss: ₹${Math.abs(transactionProfitLoss).toFixed(2)}`, 'info');
  } 
  } else if (changeReason === 'damage') { 
- totalLoss += (quanƟ tyChange * itemToModify.price); // Loss is based on cost price
+ totalLoss += (quantityChange * itemToModify.price); // Loss is based on cost price
  showMessage(`Logged ${quanƟ tyChange} of ${itemToModify.name} as damaged. Loss: 
-₹${(quanƟ tyChange * itemToModify.price).toFixed(2)}`, 'info');
+₹${(quantityChange * itemToModify.price).toFixed(2)}`, 'info');
  } 
- // Remove item if quanƟ ty drops to 0 or below
- if (itemToModify.quanƟ ty <= 0) {
+ // Remove item if quantity drops to 0 or below
+ if (itemToModify.quantity <= 0) {
  inventory = inventory.filter(item => item.id !== selectedItemId); 
  showMessage(`${itemToModify.name} quanƟ ty reached zero and was removed from 
 inventory.`, 'info'); 
  } 
  saveState(); 
- populateModifyItemSelect(); // Re-populate dropdown to reflect new quanƟƟ es or 
+ populateModifyItemSelect(); // Re-populate dropdown to reflect new quantities or 
 removed items 
  updateFinancialSummary(); // Update profit/loss display 
  updateInventoryMetrics(); // Update overall inventory metrics 
  renderInventory(); // Re-render inventory table if acƟ ve
- modifyQuanƟ tyInput.value = ''; // Clear the quanƟ ty input aŌ er successful modificaƟ on
+ modifyQuantityInput.value = ''; // Clear the quanƟ ty input aŌ er successful modification
  salePriceInput.value = ''; // Clear sale price input 
 }); 
 // IniƟ al load and render when the page loads

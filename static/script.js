@@ -47,7 +47,7 @@ const globalMessageBox = document.getElementById('globalMessageBox');
  * @param {string} type - 'success', 'error', or 'info' to determine styling. 
  */ 
 function showMessage(message, type) {
- globalMessageBox.textContent = message; 
+ globalMessageBox.textContent = message;  
  globalMessageBox.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-
 100', 'text-red-800', 'bg-blue-100', 'text-blue-800'); 
  if (type === 'success') { 

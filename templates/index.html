@@ -2,35 +2,35 @@
 <html lang="en"> 
 <head> 
  <meta charset="UTF-8"> 
- <meta name="viewport" content="width=device-width, iniƟ al-scale=1.0"> 
- <Ɵ tle>Smart Register App</Ɵ tle>
+ <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+ <title>Smart Register App</title>
  <!-- Tailwind CSS CDN --> 
- <script src="hƩ ps://cdn.tailwindcss.com"></script>
+ <script src="https://cdn.tailwindcss.com"></script>
  <!-- Inter Font --> 
  <link 
-href="hƩ ps://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swa
+href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swa
 p" rel="stylesheet"> 
  <!-- Link to external CSS file --> 
- <link rel="stylesheet" href="{{ url_for('staƟ c', filename='styles.css') }}">
+ <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head> 
 <body class="flex flex-col min-h-screen"> 
  <header class="bg-gradient-to-r from-blue-500 to-indigo-600 shadow-md py-4"> 
- <div class="container mx-auto px-4 flex flex-col sm:flex-row jusƟ fy-between items￾center"> 
+ <div class="container mx-auto px-4 flex flex-col sm:flex-row justify-between items￾center"> 
  <h1 class="text-3xl font-bold text-white mb-4 sm:mb-0">Smart Register</h1> 
  <nav class="flex flex-wrap gap-3"> 
- <buƩ on id="navAddItem" class="nav-buƩ on bg-blue-400 text-white py-2 px-5 
-rounded-md hover:bg-blue-500 transiƟ on duraƟ on-150 ease-in-out transform hover:scale105 acƟ ve">
+ <button id="navAddItem" class="nav-button bg-blue-400 text-white py-2 px-5 
+rounded-md hover:bg-blue-500 transition duration-150 ease-in-out transform hover:scale105 active">
  Add Item 
- </buƩ on>
- <buƩ on id="navInventoryView" class="nav-buƩ on bg-blue-400 text-white py-2 px-5 
-rounded-md hover:bg-blue-500 transiƟ on duraƟ on-150 ease-in-out transform hover:scale105"> 
- Inventory & ValuaƟ on
- </buƩ on>
- <buƩ on id="navStockModificaƟ on" class="nav-buƩ on bg-blue-400 text-white py-2 
-px-5 rounded-md hover:bg-blue-500 transiƟ on duraƟ on-150 ease-in-out transform 
+ </button>
+ <button id="navInventoryView" class="nav-button bg-blue-400 text-white py-2 px-5 
+rounded-md hover:bg-blue-500 transiƟ on duration-150 ease-in-out transform hover:scale105"> 
+ Inventory & Valuation
+ </button>
+ <button id="navStockModification" class="nav-button bg-blue-400 text-white py-2 
+px-5 rounded-md hover:bg-blue-500 transition duraƟ on-150 ease-in-out transform 
 hover:scale-105"> 
- Stock ModificaƟ on
- </buƩ on>
+ Stock Modification
+ </button>
  </nav> 
  </div> 
  </header> 
@@ -39,7 +39,7 @@ hover:scale-105">
  <div id="globalMessageBox" class="mt-4 p-3 text-sm text-center rounded-md hidden" 
 role="alert"></div> 
  <!-- Add Item Screen --> 
- <secƟ on id="addItemScreen" class="screen acƟ ve bg-white p-6 rounded-xl shadow-lg 
+ <section id="addItemScreen" class="screen acƟ ve bg-white p-6 rounded-xl shadow-lg 
 border border-gray-200 flex-col md:flex-row gap-6"> 
  <div class="w-full md:w-1/2 mx-auto"> 
  <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Add New 
@@ -60,9 +60,9 @@ Name</label>
 shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"> 
  </div> 
  <div> 
- <label for="itemQuanƟ ty" class="block text-sm font-medium text-gray-
-700">QuanƟ ty</label>
- <input type="number" id="itemQuanƟ ty" name="itemQuanƟ ty" required 
+ <label for="itemQuantity" class="block text-sm font-medium text-gray-
+700">Quantity</label>
+ <input type="number" id="itemQuantity" name="itemQuantity" required 
 min="0" 
  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md 
 shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"> 
@@ -76,27 +76,27 @@ min="0"
 shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"> 
  </div> 
  <div class="flex flex-col space-y-3"> 
- <buƩ on type="submit" id="saveItemBtn"
+ <button type="submit" id="saveItemBtn"
  class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-
 700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md 
-transiƟ on duraƟ on-150 ease-in-out transform hover:scale-105"> 
+transition duration-150 ease-in-out transform hover:scale-105"> 
  Add Item 
- </buƩ on>
- <buƩ on type="buƩ on" id="clearFormBtn"
+ </button>
+ <button type="button" id="clearFormBtn"
  class="w-full bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-
 600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 shadow-md 
-transiƟ on duraƟ on-150 ease-in-out transform hover:scale-105"> 
+transition duration-150 ease-in-out transform hover:scale-105"> 
  Clear Form 
- </buƩ on>
+ </button>
  </div> 
  </form> 
  </div> 
- </secƟ on>
+ </section>
  <!-- Inventory View & ValuaƟ on Screen --> 
- <secƟ on id="inventoryViewScreen" class="screen bg-white p-6 rounded-xl shadow-lg 
+ <section id="inventoryViewScreen" class="screen bg-white p-6 rounded-xl shadow-lg 
 border border-gray-200 flex-col gap-6"> 
  <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Current Inventory 
-& ValuaƟ on</h2>
+& Valuation</h2>
  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6"> 
  <div class="bg-blue-50 p-4 rounded-md text-center shadow-sm border border-blue-
 200"> 
@@ -105,11 +105,11 @@ border border-gray-200 flex-col gap-6">
  </div> 
  <div class="bg-green-50 p-4 rounded-md text-center shadow-sm border border￾green-200"> 
  <p class="text-gray-600 text-sm">Total QuanƟ ty</p>
- <p id="totalQuanƟ ty" class="text-2xl font-bold text-green-700">0</p> 
+ <p id="totalQuantity" class="text-2xl font-bold text-green-700">0</p> 
  </div> 
  <div class="bg-purple-50 p-4 rounded-md text-center shadow-sm border border￾purple-200"> 
  <p class="text-gray-600 text-sm">Total Inventory Value</p> 
- <p id="totalValuaƟ on" class="text-2xl font-bold text-purple-700">₹0.00</p> 
+ <p id="totalValuation" class="text-2xl font-bold text-purple-700">₹0.00</p> 
  </div> 
  </div> 
  <div class="mb-4"> 
@@ -127,11 +127,11 @@ uppercase tracking-wider">ID</th>
  <th scope="col" class="px-6 py-3 text-leŌ text-xs font-medium text-gray-500 
 uppercase tracking-wider">Name</th> 
  <th scope="col" class="px-6 py-3 text-leŌ text-xs font-medium text-gray-500 
-uppercase tracking-wider">QuanƟ ty</th>
+uppercase tracking-wider">Quantity</th>
  <th scope="col" class="px-6 py-3 text-leŌ text-xs font-medium text-gray-500 
 uppercase tracking-wider">Cost Price (₹)</th> 
  <th scope="col" class="px-6 py-3 text-leŌ text-xs font-medium text-gray-500 
-uppercase tracking-wider">AcƟ ons</th>
+uppercase tracking-wider">Actions</th>
  </tr> 
  </thead> 
  <tbody id="inventoryList" class="bg-white divide-y divide-gray-200"> 
@@ -141,27 +141,27 @@ uppercase tracking-wider">AcƟ ons</th>
  <div id="noItemsMessage" class="hidden text-center py-8 text-gray-500">No items 
 in inventory. Add some!</div> 
  </div> 
- </secƟ on>
- <!-- Stock ModificaƟ on Screen --> 
- <secƟ on id="stockModificaƟ onScreen" class="screen bg-white p-6 rounded-xl shadow-lg 
+ </section>
+ <!-- Stock Modification Screen --> 
+ <secƟ on id="stockModificationScreen" class="screen bg-white p-6 rounded-xl shadow-lg 
 border border-gray-200 flex-col md:flex-row gap-6"> 
  <div class="w-full md:w-1/2 mx-auto"> 
  <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Modify 
 Stock</h2> 
- <form id="stockModificaƟ onForm" class="space-y-4"> 
+ <form id="stockModificationForm" class="space-y-4"> 
  <div> 
  <label for="modifyItemId" class="block text-sm font-medium text-gray-
 700">Select Item</label> 
  <select id="modifyItemId" required 
  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md 
 shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"> 
- <opƟ on value="">-- Select an item --</opƟ on>
+ <option value="">-- Select an item --</opƟ on>
  </select> 
  </div> 
  <div> 
- <label for="modifyQuanƟ ty" class="block text-sm font-medium text-gray-
-700">QuanƟ ty to Change</label>
- <input type="number" id="modifyQuanƟ ty" required min="1"
+ <label for="modifyQuantity" class="block text-sm font-medium text-gray-
+700">Quantity to Change</label>
+ <input type="number" id="modifyQuantity" required min="1"
  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md 
 shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"> 
  </div> 
@@ -188,11 +188,11 @@ Price per Unit (₹)</label>
  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md 
 shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"> 
  </div> 
- <buƩ on type="submit" 
+ <button type="submit" 
   class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md 
-transiƟ on duraƟ on-150 ease-in-out transform hover:scale-105"> 
+transition duration-150 ease-in-out transform hover:scale-105"> 
  Apply Change 
- </buƩ on>
+ </button>
  </form> 
  <div class="mt-6 p-4 rounded-md bg-gray-50 shadow-sm border border-gray-200"> 
  <h3 class="text-xl font-semibold text-gray-800 mb-3 text-center">Financial 
@@ -201,13 +201,13 @@ Summary</h3>
  <span class="text-gray-700 font-medium">Total Profit:</span> 
  <span id="totalProfitDisplay" class="text-green-600 text-lg font￾bold">₹0.00</span> 
  </div> 
- <div class="flex jusƟ fy-between items-center"> 
+ <div class="flex justify-between items-center"> 
  <span class="text-gray-700 font-medium">Total Loss:</span> 
  <span id="totalLossDisplay" class="text-red-600 text-lg font￾bold">₹0.00</span> 
  </div> 
  </div> 
  </div> 
- </secƟ on>
+ </section>
  </main> 
  <footer class="bg-gray-800 text-white py-4 mt-6"> 
  <div class="container mx-auto px-4 text-center"> 

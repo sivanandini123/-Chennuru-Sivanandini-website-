@@ -7,5 +7,5 @@ def index():
  """ 
  return render_template('index.html') 
 if __name__ == '__main__': 
- # Run the Flask applicaƟ on in debug mode for development
+ # Run the Flask application in debug mode for development
  app.run(debug=True)

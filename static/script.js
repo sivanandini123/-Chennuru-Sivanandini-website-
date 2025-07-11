@@ -9,7 +9,7 @@ let editingItemId = null; // To keep track of the item being edited
 const navAddItemBtn = document.getElementById('navAddItem'); 
 const navInventoryViewBtn = document.getElementById('navInventoryView'); 
 const navStockModificationBtn = document.getElementById('navStockModification');
-const navButtons = document.querySelectorAll('.nav-buƩ on');
+const navButtons = document.querySelectorAll('.nav-button');
 // Screens 
 const addItemScreen = document.getElementById('addItemScreen'); 
 const inventoryViewScreen = document.getElementById('inventoryViewScreen'); 
